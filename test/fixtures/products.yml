@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  child_id: 1
+  title: MyText
+  introduction: MyText
+  introduction_voice_link: MyText
+  image1_link: MyText
+  image2_link: MyText
+  image3_link: MyText
+  state: MyText
+
+two:
+  child_id: 1
+  title: MyText
+  introduction: MyText
+  introduction_voice_link: MyText
+  image1_link: MyText
+  image2_link: MyText
+  image3_link: MyText
+  state: MyText
