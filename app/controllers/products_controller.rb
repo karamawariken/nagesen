@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
+  protect_from_forgery except: [:create]
 
   # GET /products
   # GET /products.json
