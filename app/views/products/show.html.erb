@@ -3,6 +3,7 @@
 <p>
   <strong>Child:</strong>
   <%= @product.child_id %>
+  <%= link_to 'View Child', child_path(@product.child_id) %>
 </p>
 
 <p>
@@ -22,17 +23,29 @@
 
 <p>
   <strong>Image1 link:</strong>
-  <%= @product.image1_link %>
+  <% if @product.image1_link? %>
+    <div class="thumbnail">
+      <%= image_tag @product.image1_link ,:size => "200x200" %>
+    </div>
+  <% end %>
 </p>
 
 <p>
   <strong>Image2 link:</strong>
-  <%= @product.image2_link %>
+  <% if @product.image2_link? %>
+    <div class="thumbnail">
+      <%= image_tag @product.image2_link ,:size => "200x200" %>
+    </div>
+  <% end %>
 </p>
 
 <p>
   <strong>Image3 link:</strong>
-  <%= @product.image3_link %>
+  <% if @product.image3_link? %>
+    <div class="thumbnail">
+      <%= image_tag @product.image3_link ,:size => "200x200" %>
+    </div>
+  <% end %>
 </p>
 
 <p>

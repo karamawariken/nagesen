@@ -28,16 +28,30 @@
     <%= f.text_area :introduction_voice_link %>
   </div>
   <div class="field">
-    <%= f.label :image1_link %><br>
-    <%= f.text_area :image1_link %>
+    <% if @product.image1_link? %>
+       <div class="thumbnail">
+         <%= image_tag @product.image1_link.url %>
+       </div>
+     <% end %><br>
+   <%= f.label :image1_link %><br>
+   <%= f.file_field :image1_link %>
   </div>
   <div class="field">
-    <%= f.label :image2_link %><br>
-    <%= f.text_area :image2_link %>
-  </div>
+    <% if @product.image2_link? %>
+       <div class="thumbnail">
+         <%= image_tag @product.image2_link.url %>
+       </div>
+     <% end %><br>
+   <%= f.label :image2_link %><br>
+   <%= f.file_field :image2_link %>
   <div class="field">
-    <%= f.label :image3_link %><br>
-    <%= f.text_area :image3_link %>
+    <% if @product.image3_link? %>
+       <div class="thumbnail">
+         <%= image_tag @product.image3_link.url %>
+       </div>
+     <% end %><br>
+   <%= f.label :image3_link %><br>
+   <%= f.file_field :image3_link %>
   </div>
   <div class="field">
     <%= f.label :state %><br>
