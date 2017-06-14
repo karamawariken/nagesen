@@ -17,6 +17,10 @@ gem 'coffee-rails', '~> 4.1.0'
 #image uploader
 gem 'carrierwave'
 
+#Use api
+gem 'grape'
+#Use api json parse
+gem 'grape-jbuilder'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
