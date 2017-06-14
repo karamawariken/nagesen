@@ -31,7 +31,7 @@ module API
             :title => @params[:title],
             :introduction => @params[:introduction],
             :introduction_voice_link => @params[:introduction_voice_link],
-            :image1_link => @params[:targetImage],
+            :image1_link => @params[:image1_link],
             :image2_link => @params[:image2_link],
             :image3_link => @params[:image3_link],
             :state => @params[:state],
