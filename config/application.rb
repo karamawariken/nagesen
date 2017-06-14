@@ -19,8 +19,16 @@ module Nagesen
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
+    config.time_zone = 'Tokyo'
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    # API用
+    config.paths.add File.join('app', 'apis'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'apis', '*')]
+    config.middleware.use(Rack::Config) do |env|
+      env['api.tilt.root'] = Rails.root.join 'app', 'views', 'apis'
+    end
+    # for devise custom sanitizer
+    config.autoload_paths += %W(#{config.root}/lib)
   end
 end
