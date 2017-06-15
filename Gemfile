@@ -21,6 +21,13 @@ gem 'carrierwave'
 gem 'grape'
 #Use api json parse
 gem 'grape-jbuilder'
+
+#User Login
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-twitter'
+gem 'omniauth-facebook'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
