@@ -1,7 +1,24 @@
 Rails.application.routes.draw do
+  root 'home#index'
+  get 'home/show'
+
+  get 'home/authentication'
+
+  get 'user/show'
+
+  get 'home/index'
+
+  get 'home/authentication'
+
+  devise_for :users, :controllers =>{
+    :sessions       =>"users/sessions",
+    :registrations  =>"users/registrations",
+    :passwords      =>"users/passwords",
+    :omniauth_callbacks =>"users/omniauth_callbacks"
+  }
+  devise_for :children
   resources :products
   resources :children
-  root 'children#index'
 
   mount API::Base => '/'
   # The priority is based upon order of creation: first created -> highest priority.
