@@ -8,4 +8,9 @@ class Product < ActiveRecord::Base
   def self.find_public_products
     products = Product.where(:state => "public")
   end
+
+  def self.find_draft_products
+    #ここに親子のid入れる
+    products = Product.where(:state => "draft")
+  end
 end

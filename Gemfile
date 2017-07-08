@@ -27,6 +27,7 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
+gem 'koala', '~> 2.2'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

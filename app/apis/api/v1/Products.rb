@@ -5,17 +5,18 @@ module API
 
         # GET /api/v1/products
         desc 'Return all products.'
-        get do
-          Product.all
+        get '/search', jbuilder: 'api/v1/products/search'do
+          authenticate_user!
+          @products = Product.find_public_products
+          @resoponse = "success"
         end
 
+
         # GET /api/v1/products/{:id}
-        desc 'Return a product.'
-        params do
-          requires :id, type: Integer, desc: 'Product id.'
-        end
-        get ':id' do
-          Product.find(params[:id])
+        desc 'Return all products.'
+        get '/show/:id', jbuilder: 'api/v1/products/show'do
+          @product = Product.find(params[:id])
+          @resoponse = "success"
         end
 
         # POST /api/v1/products/{:child_id}
@@ -61,6 +62,35 @@ module API
           @product.save
           @resoponse = "success"
         end
+
+        # GET /api/v1/products/draft/{:child_id}
+        desc 'Return all products.'
+        params do
+          requires :child_id, type: Integer, desc: "children id"
+        end
+        get '/draft/:child_id', jbuilder: 'api/v1/products/draft'do
+          #authenticate_user!
+          @products = Product.find_draft_products
+          @resoponse = "success"
+        end
+
+        # GET /api/v1/products/draft/{:child_id}
+        desc 'Return all products.'
+        params do
+          requires :product_id, type: Integer, desc: "product id"
+        end
+        get '/draft/change/:product_id', jbuilder: 'api/v1/products/change'do
+          #authenticate_user!
+          @products = Product.find(params[:product_id])
+          if @products.state == "draft"
+            @products.state = "public"
+            @products.save
+            @resoponse = "success"
+          else
+             ##エラー処理かく
+          end
+        end
+
       end
     end
   end
