@@ -3,8 +3,21 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :omniauthable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  has_many :kids, class_name: "Kid", foreign_key: "created_user_id"
+  has_many :family_kids, through: :family_relationships
+  has_many :follow_kids, through: :follow_relationships
 
 
+  #アイコン用の画像アップロードにuploaders/avatar_uploaderを使う
+  mount_uploader :avatar, AvatarUploader
+
+  #フォロー機能(kidをフォローする)
+  acts_as_follower
+
+  #いいね機能(productをいいねする)
+  acts_as_voter
+
+  #facebook認証のユーザデータ作成
   def self.find_for_facebook_oauth(auth, signed_in_resource = nil)
     user = User.where(:provider => auth.provider, :uid => auth.uid).first
     unless user
@@ -18,6 +31,7 @@ class User < ActiveRecord::Base
     user
   end
 
+  #twitter認証のユーザデータ作成
   def self.find_for_twitter_oauth(auth, signed_in_resource = nil)
     user = User.where(:provider => auth.provider, :uid => auth.uid).first
     unless user
@@ -49,11 +63,11 @@ class User < ActiveRecord::Base
 
   def valid_token?(token)
 
-# 当面無期限 return false if DateTime.now >= self.expires_at
-  return false if token.blank?
-  return false if token != self.access_token
-  return true
-end
+  # 当面無期限 return false if DateTime.now >= self.expires_at
+    return false if token.blank?
+    return false if token != self.access_token
+    return true
+  end
 
   #twitterでは、emailを取得できないので、適当に一位のemailを生成
   def self.create_unique_email

@@ -3,7 +3,7 @@ module API
     class Products < Grape::API
       resource :products do
 
-        # GET /api/v1/products
+        # GET /api/v1/products/serach
         desc 'Return all products.'
         get '/search', jbuilder: 'api/v1/products/search'do
           authenticate_user!
@@ -11,24 +11,36 @@ module API
           @resoponse = "success"
         end
 
+        # GET /api/v1/products/follow
+        desc 'Return current_user follow kids products.'
+        get '/follow', jbuilder: 'api/v1/products/search'do
+          authenticate_user!
+          @products = Product.where(kid_id:Follow.where(followable_id = @current_user.id).pluck(:followable_id))
+          @resoponse = "success"
+        end
 
-        # GET /api/v1/products/{:id}
+        # GET /api/v1/products/family
+        desc 'Return current_user family kids products.'
+        get '/family', jbuilder: 'api/v1/products/search'do
+          authenticate_user!
+          @products = Product.find_public_products
+          @resoponse = "success"
+        end
+
+
+        # GET /api/v1/products/show/{:id}
         desc 'Return all products.'
         get '/show/:id', jbuilder: 'api/v1/products/show'do
           @product = Product.find(params[:id])
           @resoponse = "success"
         end
 
-        # POST /api/v1/products/{:child_id}
+        # POST /api/v1/products/{:kid_id}/create
         desc 'Return create sucess or failure'
-        params do
-          requires :child_id, type: Integer, desc: "children id"
-        end
-        post '/:child_id', jbuilder: 'api/v1/products/create' do
+        post '/create', jbuilder: 'api/v1/products/create' do
           @params ||= JSON.parse(request.body.read, {:symbolize_names => true})
-          #puts @params[:targetImage]
-          @current_child = Child.find(params[:child_id])
-          @product = @current_child.products.build(
+          @current_kid = Kid.find_by(nick_name: params[:kid_name])
+          @product = @current_kid.products.build(
             :title => @params[:title],
             :introduction => @params[:introduction],
             :introduction_voice_link => @params[:introduction_voice_link],
@@ -42,26 +54,7 @@ module API
         end
 
         # POST /api/v1/products/{:product_id}/photo/{:image_num}
-        desc 'Return create sucess or failure'
-        params do
-          requires :product_id, type: Integer, desc: "product id"
-          requires :image_num, type: Integer, desc: "product's photo number"
-        end
-        post '/:child_id', jbuilder: 'api/v1/products/photo' do
-          @current_child = Child.find(params[:child_id])
-          json = ActiveSupport::JSON.decode(request.body.read)
-          @product = @current_child.products.build(
-            :title => json["title"],
-            :introduction => json["introduction"],
-            :introduction_voice_link => json["introduction_voice_link"],
-            :image1_link => json["image1_link"],
-            :image2_link => json["image2_link"],
-            :image3_link => json["image3_link"],
-            :state => json["state"],
-            )
-          @product.save
-          @resoponse = "success"
-        end
+
 
         # GET /api/v1/products/draft/{:child_id}
         desc 'Return all products.'
@@ -74,7 +67,7 @@ module API
           @resoponse = "success"
         end
 
-        # GET /api/v1/products/draft/{:child_id}
+        # GET /api/v1/products/draft/{:product_id}
         desc 'Return all products.'
         params do
           requires :product_id, type: Integer, desc: "product id"
@@ -88,6 +81,28 @@ module API
             @resoponse = "success"
           else
              ##エラー処理かく
+          end
+        end
+
+
+        #ユーザが作品をいいねする
+        # POST /api/v1/product/like/
+        desc 'Return like success or failure'
+        params do
+        end
+        post '/like', jbuilder: 'api/v1/products/like' do
+          authenticate_user!
+          @params ||= JSON.parse(request.body.read, {:symbolize_names => true})
+          @products = Product.find(@params['product_id'])
+          if @products.present?
+            if @current_user.liked?(@products)
+              @current_user.unlike(@products)
+            else
+              @current_user.likes(@products)
+            end
+            @response = "success"
+          else
+            api_error!('Product not found.', "failure", 406,'')
           end
         end
 

@@ -16,9 +16,9 @@ Rails.application.routes.draw do
     :passwords      =>"users/passwords",
     :omniauth_callbacks =>"users/omniauth_callbacks"
   }
-  devise_for :children
+  #devise_for :children
   resources :products
-  resources :children
+  resources :kids
 
   mount API::Base => '/'
   # The priority is based upon order of creation: first created -> highest priority.

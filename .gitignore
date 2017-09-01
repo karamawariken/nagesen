@@ -14,5 +14,7 @@
 
 /config/database.yml
 /config/initializers/devise.rb
+/config/initializers/carrierwave.rb
 /config/carrierwave.rb
 /public/uploads
+#/db/test_data

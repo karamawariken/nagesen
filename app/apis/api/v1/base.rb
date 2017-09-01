@@ -37,6 +37,7 @@ module API
       end
       mount V1::Products
       mount V1::Auth
+      mount V1::Users
     end
   end
 end

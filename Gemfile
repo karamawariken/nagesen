@@ -17,6 +17,9 @@ gem 'coffee-rails', '~> 4.1.0'
 #image uploader
 gem 'carrierwave'
 
+#user aws s3
+gem 'fog'
+
 #Use api
 gem 'grape'
 #Use api json parse
@@ -28,6 +31,12 @@ gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'koala', '~> 2.2'
+
+#User follow
+gem 'acts_as_follower'
+
+#Product likes
+gem 'acts_as_votable'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

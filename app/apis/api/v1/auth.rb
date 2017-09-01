@@ -15,26 +15,26 @@ module API
         post '/sign_in', jbuilder: 'api/v1/auth/show' do
           device_token = request.headers['Device-Token']
           if params[:email].present?
-            # #email/password認証
-            # @user = User.find_by_email(params[:email])
-            #
-            # if @user
-            #   if @user.authenticate(params[:password])
-            #     @user.provider = 'email'
-            #     @user.device_token = device_token if device_token.present?
-            #     @user.generate_access_token if @user.access_token.blank?
-            #     @user.set_expiration
-            #     @user.save!
-            #   else
-            #     api_error!('Wrong Password.', "failure", 401,'')
-            #   end
-            # else
-            #     api_error!('Email does not exist.', "failure", 404,'')
-            # end
+            #email/password認証
+            @user = User.find_by_email(params[:email])
+
+            if @user
+              if @user.valid_password?(params[:password])
+                #@user.provider = 'email'
+                #@user.device_token = device_token if device_token.present?
+                @user.generate_access_token if @user.access_token.blank?
+                #@user.set_expiration
+                #@user.save!
+                @response = "success"
+              else
+                api_error!('Wrong Password.', "failure", 401,'')
+              end
+            else
+                api_error!('Email does not exist.', "failure", 404,'')
+            end
           else
             #facebook認証
             token = request.headers['Fb-Access-Token']
-            print(token)
             if token.present?
               #facobookから情報もってくる
               @graph = Koala::Facebook::API.new(token)
@@ -51,6 +51,7 @@ module API
               @user.uid = profile['id']
               @user.generate_access_token if @user.access_token.blank?
               @user.save!
+              @response = "sccess"
               # @user.facebook_token = token
               # @user.device_token = device_token if device_token.present?
               # @user.set_expiration
